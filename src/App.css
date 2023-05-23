@@ -1,0 +1,148 @@
+.markerButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.markerButton img {
+  width: 20px;
+  height: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.listDiv {
+  margin-left: 15px;
+}
+
+.mapboxgl-ctrl-geocoder {
+  width: 300px;
+  border-radius: 5px;
+}
+
+.mapboxgl-ctrl-geocoder--icon {
+  top: 8px;
+}
+
+.mapboxgl-ctrl-geocoder--icon-search {
+  position: absolute;
+  left: 7px;
+  width: 20px;
+  height: 20px;
+}
+
+.mapboxgl-ctrl-geocoder--icon-close {
+  position: absolute;
+  right: -20%;
+  margin-top: 10px;
+  margin-right: 0px;
+  width: 16px;
+  height: 16px;
+}
+
+.mapboxgl-ctrl-geocoder--icon-loading {
+  display: none;
+}
+
+.mapboxgl-ctrl-geocoder--input {
+  width: 100%;
+  height: 36px;
+  padding: 6px 35px;
+}
+
+.mapboxgl-ctrl-geocoder--button {
+  margin-left: 0px;
+  border: none;
+}
+
+.suggestions-wrapper {
+  position: absolute;
+  top: 40px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+/* 
+1. remove bullet point
+2. bold title
+3. increase title font size
+*/
+
+/* <ul> */
+
+.suggestions {
+  min-width: 200px;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  margin: 2px;
+  justify-content: space-between;
+}
+
+.suggestions:hover {
+  cursor: pointer;
+}
+
+.mapboxgl-ctrl-geocoder--suggestion {
+  padding: 5px;
+  border-bottom-color: black;
+}
+
+li:hover {
+  color: blue;
+}
+
+/* Bedok Reservoir Road Market & Food Centre */
+.mapboxgl-ctrl-geocoder--suggestion-title {
+  font-size: small;
+  font-weight: bold;
+  margin: 0px;
+}
+
+/* 630 Bedok Reservoir Road, Singapore, North East Community Development Council 470630 */
+.mapboxgl-ctrl-geocoder--suggestion-address {
+  margin: 0px 10px 5px 0px;
+}
+
+.mapboxgl-popup-close-button {
+  font-size: 26px;
+}
+
+.mapboxgl-popup-content {
+  width: 300px;
+  height: 200px;
+}
+
+.favourite-button {
+  margin-top: 8px;
+}
+
+.map {
+  /* width: 400px; */
+}
+
+.geocoderControl {
+  width: 20%;
+}
+
+@media (max-width: 413px) {
+}
+
+@media (max-width: 600px) {
+}
+
+@media (max-width: 900px) {
+  .container {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 413px) {
+  .mapMobile {
+    width: 400px;
+  }
+}
