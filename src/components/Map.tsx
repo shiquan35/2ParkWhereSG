@@ -117,7 +117,7 @@ export function Map() {
 
   return (
     <>
-      {currentLocation && (
+      {currentLocation && screenSize && (
         <ReactMapGL
           style={{
             width: `${screenSize.width}px`,
