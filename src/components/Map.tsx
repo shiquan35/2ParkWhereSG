@@ -112,35 +112,38 @@ export function Map() {
         zoom: 15,
       });
     }
+    console.log("TOKEN", TOKEN);
   }, [currentLocation]);
 
   return (
     <>
-      <ReactMapGL
-        style={{
-          width: `${screenSize.width}px`,
-          height: `${screenSize.height}px`,
-          border: "2px solid black",
-        }}
-        {...viewState}
-        onMove={(event) => setViewState(event.viewState)}
-        mapboxAccessToken={TOKEN}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
-      >
-        {/* <GeolocateControl
+      {currentLocation && (
+        <ReactMapGL
+          style={{
+            width: `${screenSize.width}px`,
+            height: `${screenSize.height}px`,
+            border: "2px solid black",
+          }}
+          {...viewState}
+          onMove={(event) => setViewState(event.viewState)}
+          mapboxAccessToken={TOKEN}
+          mapStyle="mapbox://styles/mapbox/streets-v9"
+        >
+          {/* <GeolocateControl
           positionOptions={{ enableHighAccuracy: true }}
           showAccuracyCircle={false}
           position="bottom-right"
         />
         <NavigationControl position="top-right" /> */}
-        <div className="geocoderControl">
-          <GeocoderControl
-            position="top-left"
-            mapboxAccessToken={TOKEN}
-            zoom={16}
-          />
-        </div>
-      </ReactMapGL>
+          <div className="geocoderControl">
+            <GeocoderControl
+              position="top-left"
+              mapboxAccessToken={TOKEN}
+              zoom={16}
+            />
+          </div>
+        </ReactMapGL>
+      )}
     </>
   );
 }
