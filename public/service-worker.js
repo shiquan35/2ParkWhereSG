@@ -9,7 +9,8 @@ const version = "v0.0.1";
 
 //install sw at first time
 //place to cache assets to speed up the loading time of web page
-self.addEventListener("install", () => {
+self.addEventListener("install", (event) => {
+  self.skipWaiting();
   console.log("sw install event");
   event.waitUntil(
     caches.open(version + CACHE_NAME).then((cache) => {
@@ -21,8 +22,10 @@ self.addEventListener("install", () => {
 
 //Activate the sw after install
 //Place where old caches are cleared
-self.addEventListener("activate", () => {
+self.addEventListener("activate", (event) => {
   console.log("sw activate event");
+  self.clients.claim();
+
   event.waitUntil(
     caches.keys().then((cacheNames) =>
       Promise.all(
@@ -39,7 +42,7 @@ self.addEventListener("activate", () => {
 });
 
 //listen for requests
-self.addEventListener("fetch", () => {
+self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request);
