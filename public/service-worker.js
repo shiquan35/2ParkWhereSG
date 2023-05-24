@@ -13,7 +13,7 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
   console.log("sw install event");
   event.waitUntil(
-    caches.open(version + CACHE_NAME).then((cache) => {
+    caches.open(CACHE_NAME).then((cache) => {
       console.log("opened cache");
       return cache.addAll(urlsToCache);
     })
