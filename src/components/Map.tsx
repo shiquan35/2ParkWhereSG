@@ -11,7 +11,6 @@ import carparkMarker from "./carparkMarker.png";
 import { v4 as uuid } from "uuid";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Chip, Table } from "@mui/material";
-import { Text, Title } from "@mantine/core";
 
 const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
