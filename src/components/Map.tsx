@@ -7,21 +7,35 @@ import ReactMapGL, {
   NavigationControl,
 } from "react-map-gl";
 import GeocoderControl from "./GeocoderFiles/geocoder-control";
+import carparkMarker from "./carparkMarker.png";
+import { v4 as uuid } from "uuid";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Chip } from "@mui/material";
+import { Chip, Table } from "@mui/material";
+import { Text, Title } from "@mantine/core";
 
 const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
-// export interface IAppProps {
-//   lotInfo: {
-//     Agency: string;
-//     Area: string;
-//     AvailableLots: number;
-//     CarParkID: string;
-//     Development: string;
-//     Location: string;
-//     LotType: string;
-//   }[];
+interface IAppProps {
+  ltaCarparks: {
+    Agency: string;
+    Area: string;
+    AvailableLots: number;
+    CarParkID: string;
+    Development: string;
+    Location: string;
+    LotType: string;
+  }[];
+}
+
+type CarparkInfo = {
+  Agency: string;
+  Area: string;
+  AvailableLots: number;
+  CarParkID: string;
+  Development: string;
+  Location: string;
+  LotType: string;
+};
 
 type CurrentLocation = {
   longitude: number;
@@ -36,8 +50,14 @@ type ViewState = {
 };
 
 // export function Map ({ lotInfo }: IAppProps) {
-export function Map() {
+export function Map({ ltaCarparks }: IAppProps) {
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
+  const [currentLocation, setCurrentLocation] = useState<CurrentLocation>(
+    null!
+  );
+  const [selectedCarpark, setSelectedCarpark] = useState<CarparkInfo | null>(
+    null
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -93,10 +113,6 @@ export function Map() {
   //   zoom: 12,
   // });
 
-  const [currentLocation, setCurrentLocation] = useState<CurrentLocation>(
-    null!
-  );
-
   const [viewState, setViewState] = useState<ViewState>({
     longitude: currentLocation?.longitude || 103.8198,
     latitude: currentLocation?.latitude || 1.3521,
@@ -122,19 +138,12 @@ export function Map() {
           style={{
             width: `${screenSize.width}px`,
             height: `${screenSize.height}px`,
-            border: "2px solid black",
           }}
           {...viewState}
           onMove={(event) => setViewState(event.viewState)}
           mapboxAccessToken={TOKEN}
           mapStyle="mapbox://styles/mapbox/streets-v9"
         >
-          {/* <GeolocateControl
-          positionOptions={{ enableHighAccuracy: true }}
-          showAccuracyCircle={false}
-          position="bottom-right"
-        />
-        <NavigationControl position="top-right" /> */}
           <div className="geocoderControl">
             <GeocoderControl
               position="top-left"
@@ -142,6 +151,59 @@ export function Map() {
               zoom={16}
             />
           </div>
+
+          {Array.isArray(ltaCarparks) &&
+            ltaCarparks.map(
+              (lot) =>
+                Math.sqrt(
+                  (viewState.latitude - Number(lot.Location.split(" ")[0])) **
+                    2 +
+                    (viewState.longitude -
+                      Number(lot.Location.split(" ")[1])) **
+                      2
+                ) <= 0.0035 &&
+                lot.LotType === "C" && (
+                  <Marker
+                    key={uuid()}
+                    latitude={Number(lot.Location.split(" ")[0])}
+                    longitude={Number(lot.Location.split(" ")[1])}
+                  >
+                    <button
+                      className="markerButton"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setSelectedCarpark(lot);
+                      }}
+                    >
+                      <img src={carparkMarker} alt="Carpark" />
+                    </button>
+                  </Marker>
+                )
+            )}
+
+          {selectedCarpark && (
+            <Popup
+              style={{ width: `300px` }}
+              longitude={Number(selectedCarpark.Location.split(" ")[1])}
+              latitude={Number(selectedCarpark.Location.split(" ")[0])}
+              closeOnClick={false}
+              onClose={() => setSelectedCarpark(null)}
+            >
+              <div
+                onClick={(event) => {
+                  event.preventDefault();
+                  setSelectedCarpark(null);
+                }}
+              >
+                {/* <Title order={4}>{selectedCarpark.Development}</Title> */}
+                <h3>{selectedCarpark.Development}</h3>
+                {/* <Text fw={700} fz="md">
+                  Lots available: {selectedCarpark.AvailableLots}
+                </Text> */}
+                <h6>Lots available: {selectedCarpark.AvailableLots}</h6>
+              </div>
+            </Popup>
+          )}
         </ReactMapGL>
       )}
     </>
