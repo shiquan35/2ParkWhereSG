@@ -6,18 +6,18 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-// if ("serviceWorker" in navigator) {
-//   window.addEventListener("load", () => {
-//     navigator.serviceWorker
-//       .register(`/service-worker.js?v=${new Date().getTime()}`)
-//       .then((registration) => {
-//         console.log("Service Worker registered successfully:", registration);
-//       })
-//       .catch((error) => {
-//         console.log("Service Worker registration failed:", error);
-//       });
-//   });
-// }
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(`/service-worker.js?v=${new Date().getTime()}`)
+      .then((registration) => {
+        console.log("Service Worker registered successfully:", registration);
+      })
+      .catch((error) => {
+        console.log("Service Worker registration failed:", error);
+      });
+  });
+}
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
