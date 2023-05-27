@@ -11,6 +11,7 @@ import carparkMarker from "./carparkMarker.png";
 import { v4 as uuid } from "uuid";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Chip, Divider, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -24,6 +25,7 @@ interface IAppProps {
     Location: string;
     LotType: string;
   }[];
+  isFetching: boolean;
 }
 
 type CarparkInfo = {
@@ -49,7 +51,7 @@ type ViewState = {
 };
 
 // export function Map ({ lotInfo }: IAppProps) {
-export function Map({ ltaCarparks }: IAppProps) {
+export function Map({ ltaCarparks, isFetching }: IAppProps) {
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
   const [currentLocation, setCurrentLocation] = useState<CurrentLocation>(
     null!
@@ -223,6 +225,11 @@ export function Map({ ltaCarparks }: IAppProps) {
             </Popup>
           )}
         </ReactMapGL>
+      )}
+      {isFetching && (
+        <div className="loading">
+          <CircularProgress />
+        </div>
       )}
     </>
   );

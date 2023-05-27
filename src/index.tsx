@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -17,13 +18,16 @@ if ("serviceWorker" in navigator) {
       });
   });
 }
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

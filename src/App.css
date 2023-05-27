@@ -123,6 +123,14 @@ li:hover {
 
 .geocoderControl {
   width: 20%;
+  z-index: 98;
+}
+
+.loading {
+  z-index: 99;
+  position: absolute;
+  left: 49%;
+  top: 50%;
 }
 
 @media (max-width: 413px) {
