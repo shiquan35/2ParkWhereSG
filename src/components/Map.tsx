@@ -10,7 +10,7 @@ import GeocoderControl from "./GeocoderFiles/geocoder-control";
 import carparkMarker from "./carparkMarker.png";
 import { v4 as uuid } from "uuid";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Chip, Table } from "@mui/material";
+import { Chip, Divider, Typography } from "@mui/material";
 
 const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -136,7 +136,8 @@ export function Map({ ltaCarparks }: IAppProps) {
         <ReactMapGL
           style={{
             width: `${screenSize.width}px`,
-            height: `${screenSize.height}px`,
+            // height: `${screenSize.height}px`,
+            height: "100vh",
           }}
           {...viewState}
           onMove={(event) => setViewState(event.viewState)}
@@ -160,7 +161,7 @@ export function Map({ ltaCarparks }: IAppProps) {
                     (viewState.longitude -
                       Number(lot.Location.split(" ")[1])) **
                       2
-                ) <= 0.005 &&
+                ) <= 0.0045 &&
                 lot.LotType === "C" && (
                   <Marker
                     key={uuid()}
@@ -182,7 +183,7 @@ export function Map({ ltaCarparks }: IAppProps) {
 
           {selectedCarpark && (
             <Popup
-              style={{ width: `300px` }}
+              style={{ width: `300px`, height: `100px` }}
               longitude={Number(selectedCarpark.Location.split(" ")[1])}
               latitude={Number(selectedCarpark.Location.split(" ")[0])}
               closeOnClick={false}
@@ -194,12 +195,30 @@ export function Map({ ltaCarparks }: IAppProps) {
                   setSelectedCarpark(null);
                 }}
               >
-                {/* <Title order={4}>{selectedCarpark.Development}</Title> */}
-                <h3>{selectedCarpark.Development}</h3>
-                {/* <Text fw={700} fz="md">
-                  Lots available: {selectedCarpark.AvailableLots}
-                </Text> */}
-                <h6>Lots available: {selectedCarpark.AvailableLots}</h6>
+                <h2>{selectedCarpark.Development}</h2>
+                <Typography variant="h6">
+                  Lots remaining: {"\u00A0"}
+                  {Number(selectedCarpark.AvailableLots) >= 0 &&
+                    Number(selectedCarpark.AvailableLots) < 20 && (
+                      <Chip
+                        label={selectedCarpark.AvailableLots}
+                        color="error"
+                      />
+                    )}
+                  {Number(selectedCarpark.AvailableLots) >= 20 &&
+                    Number(selectedCarpark.AvailableLots) < 50 && (
+                      <Chip
+                        label={selectedCarpark.AvailableLots}
+                        color="warning"
+                      />
+                    )}
+                  {Number(selectedCarpark.AvailableLots) >= 50 && (
+                    <Chip
+                      label={selectedCarpark.AvailableLots}
+                      color="success"
+                    />
+                  )}
+                </Typography>
               </div>
             </Popup>
           )}

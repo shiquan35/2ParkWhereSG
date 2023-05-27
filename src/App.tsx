@@ -30,7 +30,7 @@ function App() {
     <>
       {/* <Header /> */}
       <Map ltaCarparks={ltaCarparks} />
-      <Navigation nav={nav} setNav={setNav} />
+      {/* <Navigation nav={nav} setNav={setNav} /> */}
     </>
   );
 }
