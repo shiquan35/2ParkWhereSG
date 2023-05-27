@@ -160,7 +160,7 @@ export function Map({ ltaCarparks }: IAppProps) {
                     (viewState.longitude -
                       Number(lot.Location.split(" ")[1])) **
                       2
-                ) <= 0.0035 &&
+                ) <= 0.005 &&
                 lot.LotType === "C" && (
                   <Marker
                     key={uuid()}
