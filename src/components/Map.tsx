@@ -1,35 +1,27 @@
 import React, { useState, useEffect } from "react";
 import "./styles.css";
-import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import ReactMapGL, {
+  Marker,
+  Popup,
+  GeolocateControl,
+  NavigationControl,
+} from "react-map-gl";
+import GeocoderControl from "./GeocoderFiles/geocoder-control";
+import "mapbox-gl/dist/mapbox-gl.css";
 import { Chip } from "@mui/material";
 
-// const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
+const TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
-const icon = L.icon({
-  iconUrl: "./carparkMarker.png",
-  iconSize: [30, 30],
-});
-
-function ResetCenterView(props: any) {
-  const { selectPosition } = props;
-  const map = useMap();
-
-  useEffect(() => {
-    if (selectPosition) {
-      map.setView(
-        L.latLng(selectPosition?.latitude, selectPosition?.longitude),
-        map.getZoom(),
-        {
-          animate: true,
-        }
-      );
-    }
-  }, [selectPosition]);
-
-  return null;
-}
+// export interface IAppProps {
+//   lotInfo: {
+//     Agency: string;
+//     Area: string;
+//     AvailableLots: number;
+//     CarParkID: string;
+//     Development: string;
+//     Location: string;
+//     LotType: string;
+//   }[];
 
 type CurrentLocation = {
   longitude: number;
@@ -43,24 +35,15 @@ type ViewState = {
   zoom: number;
 };
 
-interface IProps {
-  selectPosition: CurrentLocation;
-}
-
 // export function Map ({ lotInfo }: IAppProps) {
-export function Map(props: IProps) {
-  const { selectPosition } = props;
+export function Map() {
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
-  const [currentLocation, setCurrentLocation] = useState<CurrentLocation>(
-    null!
-  );
 
   useEffect(() => {
     const handleResize = () => {
       setScreenSize({
         width: window.innerWidth,
-        // height: window.innerHeight - 80,
-        height: window.innerHeight,
+        height: window.innerHeight - 80,
       });
     };
 
@@ -76,6 +59,9 @@ export function Map(props: IProps) {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("screensize", screenSize);
+  }, [screenSize]);
   // helper functions for geolocation
   const success = (pos: any): void => {
     const crd = pos.coords;
@@ -101,6 +87,16 @@ export function Map(props: IProps) {
     navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
 
+  // const [currentLocation, setCurrentLocation] = useState<CurrentLocation>({
+  //   longitude: 103.8198,
+  //   latitude: 1.3521,
+  //   zoom: 12,
+  // });
+
+  const [currentLocation, setCurrentLocation] = useState<CurrentLocation>(
+    null!
+  );
+
   const [viewState, setViewState] = useState<ViewState>({
     longitude: currentLocation?.longitude || 103.8198,
     latitude: currentLocation?.latitude || 1.3521,
@@ -116,40 +112,37 @@ export function Map(props: IProps) {
         zoom: 15,
       });
     }
+    console.log("TOKEN", TOKEN);
   }, [currentLocation]);
-
-  // update currentLocation based on Searched
-  useEffect(() => {
-    setCurrentLocation(selectPosition);
-  }, [selectPosition]);
 
   return (
     <>
       {currentLocation && screenSize && (
-        <MapContainer
-          center={[currentLocation.latitude, currentLocation.longitude]}
-          zoom={15}
-          scrollWheelZoom={true}
+        <ReactMapGL
           style={{
             width: `${screenSize.width}px`,
             height: `${screenSize.height}px`,
+            border: "2px solid black",
           }}
+          {...viewState}
+          onMove={(event) => setViewState(event.viewState)}
+          mapboxAccessToken={TOKEN}
+          mapStyle="mapbox://styles/mapbox/streets-v9"
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-
-          <Marker
-            position={[currentLocation.latitude, currentLocation.longitude]}
-            icon={icon}
-          >
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-          <ResetCenterView selectPosition={selectPosition} />
-        </MapContainer>
+          {/* <GeolocateControl
+          positionOptions={{ enableHighAccuracy: true }}
+          showAccuracyCircle={false}
+          position="bottom-right"
+        />
+        <NavigationControl position="top-right" /> */}
+          <div className="geocoderControl">
+            <GeocoderControl
+              position="top-left"
+              mapboxAccessToken={TOKEN}
+              zoom={16}
+            />
+          </div>
+        </ReactMapGL>
       )}
     </>
   );
