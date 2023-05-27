@@ -1,4 +1,19 @@
-.header {
-  background-color: brown;
-  height: 40px;
+.container {
+  position: relative;
+}
+
+.searchbox {
+  background-color: white;
+  border-radius: 10px;
+  /* height: 50px; */
+  z-index: 2;
+  position: absolute;
+  right: 17%;
+  top: 1%;
+}
+
+.leaflet-container {
+  height: 100vh;
+  width: 100%;
+  z-index: 1;
 }
