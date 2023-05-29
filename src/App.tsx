@@ -5,6 +5,7 @@ import { Header } from "./components/Header";
 import { Map } from "./components/Map";
 import Navigation from "./components/Navigation";
 import { useQuery } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 
 type CarparkDetails = {
   Agency: string;
@@ -40,6 +41,7 @@ function App() {
     <>
       {/* <Header /> */}
       <Map ltaCarparks={ltaCarparks} isFetching={isFetching} />
+      <Analytics />
       {/* <Navigation nav={nav} setNav={setNav} /> */}
     </>
   );
