@@ -32,7 +32,7 @@ function App() {
     ["ltaCarparks"],
     () =>
       axios
-        .get("https://fierce-puce-shark.cyclic.app/")
+        .get("https://parkwheresg-backend.onrender.com/")
         .then((res) => setLtaCarparks(res.data))
     // .catch((err) => console.log("fetch carpark err", err))
   );
@@ -40,7 +40,7 @@ function App() {
   return (
     <>
       {/* <Header /> */}
-      <Map ltaCarparks={ltaCarparks} isFetching={isFetching} />
+      <Map ltaCarparks={ltaCarparks} isFetching={isLoading} />
       <Analytics />
       {/* <Navigation nav={nav} setNav={setNav} /> */}
     </>
